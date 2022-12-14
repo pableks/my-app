@@ -76,9 +76,9 @@ loader.load('models/gltf/capybara.glb', function (gltf) {
 function introAnimation() {
     controls.enabled = false //disable orbit controls to animate the camera
     
-    new TWEEN.Tween(camera.position.set(26,4,-35 )).to({ // from camera position
-        x: 16, //desired x position to go
-        y: 50, //desired y position to go
+    new TWEEN.Tween(camera.position.set(5,4,12 )).to({ // from camera position
+        x: 2, //desired x position to go
+        y: 2, //desired y position to go
         z: -0.1 //desired z position to go
     }, 6500) // time take to animate
     .delay(1000).easing(TWEEN.Easing.Quartic.InOut).start() // define delay, easing
@@ -96,8 +96,8 @@ introAnimation() // call intro animation on start
 function setOrbitControlsLimits(){
     controls.enableDamping = true
     controls.dampingFactor = 0.04
-    controls.minDistance = 35
-    controls.maxDistance = 60
+    controls.minDistance = 2
+    controls.maxDistance = 8
     controls.enableRotate = true
     controls.enableZoom = true
     controls.maxPolarAngle = Math.PI /2.5
