@@ -100,7 +100,7 @@ function setOrbitControlsLimits(){
     controls.maxDistance = 8
     controls.enableRotate = true
     controls.enableZoom = true
-    controls.maxPolarAngle = Math.PI /2.5
+    controls.maxPolarAngle = Math.PI /1
 }
 
 /////////////////////////////////////////////////////////////////////////
