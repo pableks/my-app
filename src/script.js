@@ -83,7 +83,7 @@ let obj;
 ///// LOADING GLB/GLTF MODEL FROM BLENDER
 const loader = new GLTFLoader()
 
-loader.load('models/gltf/capy.glb', function (gltf) {
+loader.load('models/gltf/escenaa.glb', function (gltf) {
     
     
     mixer = new THREE.AnimationMixer(gltf.scene);
@@ -117,10 +117,10 @@ function introAnimation() {
     controls.enabled = false //disable orbit controls to animate the camera
     
     new TWEEN.Tween(camera.position.set(5,4,12 )).to({ // from camera position
-        x: 2, //desired x position to go
-        y: 2, //desired y position to go
-        z: -0.1 //desired z position to go
-    }, 6500) // time take to animate
+        x: 7, //desired x position to go
+        y: 6, //desired y position to go
+        z: -0.5 //desired z position to go
+    }, 1000) // time take to animate
     .delay(1000).easing(TWEEN.Easing.Quartic.InOut).start() // define delay, easing
     .onComplete(function () { //on finish animation
         controls.enabled = true //enable orbit controls
@@ -139,8 +139,8 @@ introAnimation() // call intro animation on start
 function setOrbitControlsLimits(){
     controls.enableDamping = true
     controls.dampingFactor = 0.04
-    controls.minDistance = 2
-    controls.maxDistance = 12
+    controls.minDistance = 3
+    controls.maxDistance = 100
     controls.enableRotate = true
     controls.enableZoom = true
     controls.maxPolarAngle = Math.PI /1
