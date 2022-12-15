@@ -1,11 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
 ///// IMPORT
 import './main.css'
+import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js'
+
 import * as THREE from 'three'
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader, GLTFParser } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { BloomEffect, EffectComposer, EffectPass, RenderPass } from "postprocessing";
+import { UnrealBloomPass }  from "postprocessing";
 
 
 
@@ -78,9 +82,13 @@ scene.add(sunLight)
 var mixer;
 let obj;
 
-
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+composer.addPass(new EffectPass(camera, new BloomEffect()));
 /////////////////////////////////////////////////////////////////////////
 ///// LOADING GLB/GLTF MODEL FROM BLENDER
+
+
 const loader = new GLTFLoader()
 
 loader.load('models/gltf/escenaa.glb', function (gltf) {
@@ -172,9 +180,9 @@ function rendeLoop() {
 
 
 
+
 rendeLoop() //start rendering
 
-import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js'
 const gui = new GUI()
 
 // create parameters for GUI
@@ -201,6 +209,7 @@ gui.addColor(params,'color').name('Dir color').onChange(update)
 gui.addColor(params,'color2').name('Amb color').onChange(update)
 gui.add(ambient, 'intensity').min(0).max(10).step(0.001).name('Amb intensity')
 gui.addColor(params,'color3').name('BG color').onChange(update)
+
 
 //////////////////////////////////////////////////
 //// ON MOUSE MOVE TO GET CAMERA POSITION
