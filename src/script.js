@@ -4,16 +4,15 @@ import './main.css'
 import * as THREE from 'three'
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { GLTFLoader, GLTFParser } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+
+
 
 /////////////////////////////////////////////////////////////////////////
 //// DRACO LOADER TO LOAD DRACO COMPRESSED MODELS FROM BLENDER
 const dracoLoader = new DRACOLoader()
-const loader = new GLTFLoader()
-dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
-dracoLoader.setDecoderConfig({ type: 'js' })
-loader.setDRACOLoader(dracoLoader)
+
 
 /////////////////////////////////////////////////////////////////////////
 ///// DIV CONTAINER CREATION TO HOLD THREEJS EXPERIENCE
@@ -24,6 +23,18 @@ document.body.appendChild(container)
 ///// SCENE CREATION
 const scene = new THREE.Scene()
 scene.background = new THREE.Color('#c8f0f9')
+
+const state = {
+    clock: new THREE.Clock(),
+    frame: 0,
+    maxFrame: 90,
+    fps: 30,
+    per: 0
+};
+
+
+
+
 
 /////////////////////////////////////////////////////////////////////////
 ///// RENDERER CONFIG
@@ -64,12 +75,41 @@ const sunLight = new THREE.DirectionalLight(0xe8c37b, 1.96)
 sunLight.position.set(-69,44,14)
 scene.add(sunLight)
 
+var mixer;
+let obj;
+
+
 /////////////////////////////////////////////////////////////////////////
 ///// LOADING GLB/GLTF MODEL FROM BLENDER
-loader.load('models/gltf/capybara.glb', function (gltf) {
+const loader = new GLTFLoader()
 
-    scene.add(gltf.scene)
+loader.load('models/gltf/capy.glb', function (gltf) {
+    
+    
+    mixer = new THREE.AnimationMixer(gltf.scene);
+    obj = gltf.scene;
+
+
+
+    
+        
+   
+    
+    scene.add( gltf.scene )
+    const clip = THREE.AnimationClip.findByName()
+    
+
+    const action = mixer.clipAction( clip );
+    action.play();
+
+    // starts idle animation 
+   
+
+
+    console.log(gltf)
 })
+
+
 
 /////////////////////////////////////////////////////////////////////////
 //// INTRO CAMERA ANIMATION USING TWEEN
@@ -91,31 +131,46 @@ function introAnimation() {
 
 introAnimation() // call intro animation on start
 
+
+
+
 /////////////////////////////////////////////////////////////////////////
 //// DEFINE ORBIT CONTROLS LIMITS
 function setOrbitControlsLimits(){
     controls.enableDamping = true
     controls.dampingFactor = 0.04
     controls.minDistance = 2
-    controls.maxDistance = 8
+    controls.maxDistance = 12
     controls.enableRotate = true
     controls.enableZoom = true
     controls.maxPolarAngle = Math.PI /1
 }
 
+
+
+
 /////////////////////////////////////////////////////////////////////////
+
+state.clock.start();
+
 //// RENDER LOOP FUNCTION
 function rendeLoop() {
-
+    //requestAnimationFrame( rendeLoop )
     TWEEN.update() // update animations
-
-    controls.update() // update orbit controls
-
-    renderer.render(scene, camera) // render the scene using the camera
-
-    requestAnimationFrame(rendeLoop) //loop the render function
     
+    controls.update() // update orbit controls
+    //let mixerUpdateDelta = clock.getDelta();
+    //mixer.update( mixerUpdateDelta );
+    
+    
+    
+    // render the scene using the camera
+
+    requestAnimationFrame(rendeLoop); //loop the render function
+    renderer.render(scene, camera) 
 }
+
+
 
 rendeLoop() //start rendering
 
@@ -133,6 +188,7 @@ const update = function () {
 	sunLight.color.set(colorObj)
 	ambient.color.set(colorObj2)
 	scene.background.set(colorObj3)
+ 
 }
 
 //////////////////////////////////////////////////
