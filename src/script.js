@@ -46,7 +46,7 @@ container.appendChild(renderer.domElement) // add the renderer to html div
 
 /////////////////////////////////////////////////////////////////////////
 ///// CAMERAS CONFIG
-const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 100)
+const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 150)
 camera.position.set(34,16,-20)
 scene.add(camera)
 
